@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <style>
+        body { margin: 0}
+    </style>
+</head>
+<body>
+    <script src="./js/three.min.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <script type="text/javascript">
+        var scene,camera,renderer,controls; 
+        function init(){
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.01, 1000);
+            camera.position.set(0,0,2);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+            useShpere();
+
+            loop();
+        }
+
+        function useShpere(){
+            var geometry = new THREE.SphereGeometry(1,50,50);
+            var texture = new THREE.TextureLoader().load('./src/vr.jpg');
+            var material = new THREE.MeshBasicMaterial({map:texture});
+            var circle = new THREE.Mesh(geometry, material);
+            // circle.material.wireframe = true;
+            circle.geometry.scale(1,1,-1);
+            scene.add(circle);
+            camera.position.set(0,0,0.1);
+        }
+
+        function loop(){
+            requestAnimationFrame(loop);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        init();
+    </script>
+</body>
+</html>
